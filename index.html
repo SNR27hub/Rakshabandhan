@@ -1,4 +1,4 @@
-<meta name='viewport' content='width=device-width, initial-scale=1'/><!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -103,16 +103,27 @@
             animation: shimmer 2s infinite alternate, bounceIn 1s ease-out;
         }
 
+        /* Updated Sender Display Styling with Animations */
         #sender-display {
             font-size: 1.5em;
             color: #4b0082;
             margin-bottom: 30px;
             font-weight: bold;
-            animation: fadeIn 1.5s forwards;
-            text-shadow: 0 0 5px #ffd700;
+            text-shadow: 0 0 5px #ffd700, 0 0 10px #ff4500;
+            animation: textGlow 2s infinite alternate, bounceIn 1.5s ease-out;
+            display: inline-block; /* For animation effects */
+            position: relative;
         }
 
-        /* Updated Styling for GIF */
+        /* Optional: Add a pseudo-element for extra sparkle */
+        #sender-display::after {
+            content: '✨';
+            position: absolute;
+            right: -30px;
+            font-size: 1.2em;
+            animation: sparkle 1s infinite alternate;
+        }
+
         #rakhi-video {
             width: 100%;
             max-width: 600px;
@@ -120,58 +131,11 @@
             border: 6px solid #ff4500;
             box-shadow: 0 8px 20px rgba(0,0,0,0.3);
             margin-top: 25px;
-            aspect-ratio: 16 / 9; /* Maintain aspect ratio */
-            object-fit: cover; /* Ensure GIF scales properly */
+            aspect-ratio: 16 / 9;
+            object-fit: cover;
             transform: scale(0.9);
             animation: slideUp 1s forwards 0.8s ease-out, videoGlow 2s infinite alternate;
             opacity: 0;
-        }
-
-        .input-group {
-            margin-top: 35px;
-            margin-bottom: 25px;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 12px;
-            font-size: 1.2em;
-            color: #4b0082;
-            text-shadow: 0 0 5px #ffd700;
-        }
-
-        input[type="text"] {
-            width: calc(100% - 24px);
-            padding: 14px;
-            border: 2px solid #ffd700;
-            border-radius: 10px;
-            font-size: 1.1em;
-            margin-bottom: 20px;
-            box-sizing: border-box;
-            transition: border-color 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        input[type="text"]:focus {
-            border-color: #ff1493;
-            box-shadow: 0 0 10px #ff1493;
-            outline: none;
-        }
-
-        button {
-            background: linear-gradient(45deg, #ff1493, #ff4500);
-            color: white;
-            padding: 14px 30px;
-            border: none;
-            border-radius: 10px;
-            font-size: 1.2em;
-            cursor: pointer;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            box-shadow: 0 4px 15px rgba(255, 20, 147, 0.5);
-        }
-
-        button:hover {
-            transform: translateY(-3px) scale(1.05);
-            box-shadow: 0 8px 20px rgba(255, 20, 147, 0.7);
         }
 
         #share-section .share-icons {
@@ -206,6 +170,7 @@
         .rakhi-decoration:nth-child(3) { bottom: 15%; left: 15%; animation-delay: 2s; }
         .rakhi-decoration:nth-child(4) { bottom: 10%; right: 15%; animation-delay: 3s; }
 
+        /* Animations */
         @keyframes fadeIn {
             from { opacity: 0; }
             to { opacity: 1; }
@@ -254,6 +219,17 @@
             100% { transform: translateY(0); }
         }
 
+        @keyframes textGlow {
+            0% { color: #4b0082; text-shadow: 0 0 5px #ffd700, 0 0 10px #ff4500; }
+            50% { color: #ff1493; text-shadow: 0 0 10px #ffd700, 0 0 15px #ff4500, 0 0 20px #ff1493; }
+            100% { color: #4b0082; text-shadow: 0 0 5px #ffd700, 0 0 10px #ff4500; }
+        }
+
+        @keyframes sparkle {
+            0% { opacity: 0; transform: scale(0.5); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+
         @media (max-width: 600px) {
             h1 {
                 font-size: 2.2em;
@@ -263,10 +239,6 @@
             }
             .card-section {
                 padding: 25px;
-            }
-            input[type="text"], button {
-                padding: 12px;
-                font-size: 1em;
             }
             #developer-info {
                 padding: 10px 0;
@@ -313,15 +285,6 @@
 
             <audio id="background-song" src="rakhi-song.mp3" loop autoplay volume="0.3"></audio>
 
-            <div class="input-group">
-                <label for="receiverNameInput">
-                    Enter your name to send your own greeting: <br>
-                    ଆପଣଙ୍କ ନାମ ଲେଖନ୍ତୁ ଏବଂ ନିଜ ଶୁଭେଚ୍ଛା ପଠାନ୍ତୁ:
-                </label>
-                <input type="text" id="receiverNameInput" placeholder="Your Name / ଆପଣଙ୍କ ନାମ" autocomplete="off">
-            </div>
-            <button onclick="updateSenderAndShare()">Send Greeting / ଶୁଭେଚ୍ଛା ପଠାନ୍ତୁ</button>
-
             <div id="share-section" style="margin-top: 40px;">
                 <label>
                     Share this greeting with your loved ones! <br>
@@ -343,7 +306,6 @@
 
     <script>
         const senderDisplay = document.getElementById('sender-display');
-        const receiverNameInput = document.getElementById('receiverNameInput');
         const whatsappShare = document.getElementById('whatsapp-share');
         const facebookShare = document.getElementById('facebook-share');
         const backgroundSong = document.getElementById('background-song');
@@ -373,20 +335,6 @@
         function updateGreetingAndLinks(sender) {
             senderDisplay.textContent = `From: ${sender}`;
             updateShareLinks(sender);
-        }
-
-        function updateSenderAndShare() {
-            const newSenderName = receiverNameInput.value.trim();
-            if (newSenderName) {
-                currentSender = newSenderName;
-                const newUrl = window.location.protocol + "//" + window.location.host + window.location.pathname + "?sender=" + encodeURIComponent(newSenderName);
-                window.history.pushState({ sender: newSenderName }, '', newUrl);
-                updateGreetingAndLinks(newSenderName);
-                receiverNameInput.value = '';
-                triggerConfetti();
-            } else {
-                alert("Please enter your name to send blessings! / ଦୟାକରି ଆପଣଙ୍କ ନାମ ଲେଖନ୍ତୁ!");
-            }
         }
 
         function updateShareLinks(sender) {
@@ -428,16 +376,6 @@
                 particles.push(createParticle());
             }
             animateConfetti();
-        }
-
-        function triggerConfetti() {
-            particles = [];
-            for (let i = 0; i < 100; i++) {
-                particles.push(createParticle());
-            }
-            setTimeout(() => {
-                particles = particles.slice(0, 50);
-            }, 3000);
         }
 
         function animateConfetti() {
