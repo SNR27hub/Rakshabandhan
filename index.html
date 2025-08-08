@@ -1,0 +1,464 @@
+<meta name='viewport' content='width=device-width, initial-scale=1'/><!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Raksha Bandhan Subhakamana - SNR</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* General Body Styling */
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #ff6b6b, #ffd700, #8a2be2, #00ff7f);
+            background-size: 400%;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            overflow-x: hidden;
+            opacity: 0;
+            animation: fadeIn 1.5s forwards, gradientShift 15s ease infinite;
+            position: relative;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        #developer-info {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: linear-gradient(90deg, #c71585, #ff4500);
+            color: white;
+            padding: 12px 0;
+            text-align: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transform: translateY(-50px);
+            animation: slideDown 0.8s forwards 0.5s, pulseGlow 2s infinite alternate;
+        }
+
+        #developer-info img {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            margin-right: 12px;
+            border: 3px solid #ffd700;
+            transition: transform 0.3s ease;
+        }
+
+        #developer-info img:hover {
+            transform: rotate(360deg);
+        }
+
+        #developer-info .name {
+            font-weight: bold;
+            font-size: 1.2em;
+            text-shadow: 0 0 10px #ffd700;
+        }
+
+        main {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 90%;
+            max-width: 700px;
+            padding: 20px;
+            padding-top: 90px;
+            box-sizing: border-box;
+            text-align: center;
+        }
+
+        .card-section {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 35px;
+            border-radius: 20px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+            margin-bottom: 30px;
+            width: 100%;
+            box-sizing: border-box;
+            position: relative;
+            overflow: hidden;
+            border: 2px solid #ffd700;
+            animation: cardPulse 3s infinite alternate;
+        }
+
+        h1 {
+            color: #ff1493;
+            font-size: 3em;
+            margin-bottom: 20px;
+            line-height: 1.4;
+            text-shadow: 0 0 15px #ffd700, 0 0 25px #ff4500;
+            animation: shimmer 2s infinite alternate, bounceIn 1s ease-out;
+        }
+
+        #sender-display {
+            font-size: 1.5em;
+            color: #4b0082;
+            margin-bottom: 30px;
+            font-weight: bold;
+            animation: fadeIn 1.5s forwards;
+            text-shadow: 0 0 5px #ffd700;
+        }
+
+        /* Updated Styling for GIF */
+        #rakhi-video {
+            width: 100%;
+            max-width: 600px;
+            border-radius: 15px;
+            border: 6px solid #ff4500;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+            margin-top: 25px;
+            aspect-ratio: 16 / 9; /* Maintain aspect ratio */
+            object-fit: cover; /* Ensure GIF scales properly */
+            transform: scale(0.9);
+            animation: slideUp 1s forwards 0.8s ease-out, videoGlow 2s infinite alternate;
+            opacity: 0;
+        }
+
+        .input-group {
+            margin-top: 35px;
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 12px;
+            font-size: 1.2em;
+            color: #4b0082;
+            text-shadow: 0 0 5px #ffd700;
+        }
+
+        input[type="text"] {
+            width: calc(100% - 24px);
+            padding: 14px;
+            border: 2px solid #ffd700;
+            border-radius: 10px;
+            font-size: 1.1em;
+            margin-bottom: 20px;
+            box-sizing: border-box;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        input[type="text"]:focus {
+            border-color: #ff1493;
+            box-shadow: 0 0 10px #ff1493;
+            outline: none;
+        }
+
+        button {
+            background: linear-gradient(45deg, #ff1493, #ff4500);
+            color: white;
+            padding: 14px 30px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.2em;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255, 20, 147, 0.5);
+        }
+
+        button:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 8px 20px rgba(255, 20, 147, 0.7);
+        }
+
+        #share-section .share-icons {
+            margin-top: 25px;
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+        }
+
+        #share-section .share-icons a {
+            font-size: 3em;
+            color: #ff4500;
+            transition: transform 0.3s ease, color 0.3s ease;
+        }
+
+        #share-section .share-icons a:hover {
+            transform: scale(1.2) rotate(10deg);
+            color: #ffd700;
+        }
+
+        .rakhi-decoration {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            background: url('rakhi-image.png') no-repeat center/cover;
+            animation: float 5s infinite ease-in-out;
+            pointer-events: none;
+        }
+
+        .rakhi-decoration:nth-child(1) { top: 10%; left: 10%; animation-delay: 0s; }
+        .rakhi-decoration:nth-child(2) { top: 20%; right: 10%; animation-delay: 1s; }
+        .rakhi-decoration:nth-child(3) { bottom: 15%; left: 15%; animation-delay: 2s; }
+        .rakhi-decoration:nth-child(4) { bottom: 10%; right: 15%; animation-delay: 3s; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideDown {
+            from { transform: translateY(-50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(20px) scale(0.9); opacity: 0; }
+            to { transform: translateY(0) scale(1); opacity: 1; }
+        }
+
+        @keyframes shimmer {
+            0% { text-shadow: 0 0 5px #ffd700, 0 0 10px #ff4500; }
+            50% { text-shadow: 0 0 15px #ffd700, 0 0 20px #ff4500, 0 0 30px #ff1493; }
+            100% { text-shadow: 0 0 5px #ffd700, 0 0 10px #ff4500; }
+        }
+
+        @keyframes bounceIn {
+            0% { transform: scale(0.5); opacity: 0; }
+            60% { transform: scale(1.2); opacity: 1; }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes pulseGlow {
+            0% { box-shadow: 0 0 10px #ff4500; }
+            100% { box-shadow: 0 0 20px #ffd700; }
+        }
+
+        @keyframes videoGlow {
+            0% { box-shadow: 0 0 10px #ff4500; }
+            100% { box-shadow: 0 0 20px #ffd700; }
+        }
+
+        @keyframes cardPulse {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.02); }
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+            100% { transform: translateY(0); }
+        }
+
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 2.2em;
+            }
+            #sender-display {
+                font-size: 1.2em;
+            }
+            .card-section {
+                padding: 25px;
+            }
+            input[type="text"], button {
+                padding: 12px;
+                font-size: 1em;
+            }
+            #developer-info {
+                padding: 10px 0;
+            }
+            #developer-info img {
+                width: 35px;
+                height: 35px;
+            }
+            #developer-info .name {
+                font-size: 1em;
+            }
+            .rakhi-decoration {
+                width: 40px;
+                height: 40px;
+            }
+        }
+
+        #confetti-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 999;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="confetti-canvas"></canvas>
+
+    <div id="developer-info">
+        <img src="developer-photo.jpg" alt="Developer Photo">
+        <span class="name">Developer: SNR</span>
+    </div>
+
+    <main>
+        <div class="card-section">
+            <h1>Happy Raksha Bandhan! <br> ରକ୍ଷା ବନ୍ଧନ ଶୁଭେଚ୍ଛା!</h1>
+
+            <p id="sender-display"></p>
+
+            <img id="rakhi-video" src="Rakhi.gif" alt="Raksha Bandhan GIF">
+
+            <audio id="background-song" src="rakhi-song.mp3" loop autoplay volume="0.3"></audio>
+
+            <div class="input-group">
+                <label for="receiverNameInput">
+                    Enter your name to send your own greeting: <br>
+                    ଆପଣଙ୍କ ନାମ ଲେଖନ୍ତୁ ଏବଂ ନିଜ ଶୁଭେଚ୍ଛା ପଠାନ୍ତୁ:
+                </label>
+                <input type="text" id="receiverNameInput" placeholder="Your Name / ଆପଣଙ୍କ ନାମ" autocomplete="off">
+            </div>
+            <button onclick="updateSenderAndShare()">Send Greeting / ଶୁଭେଚ୍ଛା ପଠାନ୍ତୁ</button>
+
+            <div id="share-section" style="margin-top: 40px;">
+                <label>
+                    Share this greeting with your loved ones! <br>
+                    ଏହି ଶୁଭେଚ୍ଛାକୁ ଆପଣଙ୍କ ପ୍ରିୟଜନଙ୍କ ସହ ବାଣ୍ଟନ୍ତୁ!
+                </label>
+                <div class="share-icons">
+                    <a id="whatsapp-share" href="#" target="_blank" aria-label="Share on WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                    <a id="facebook-share" href="#" target="_blank" aria-label="Share on Facebook"><i class="fab fa-facebook"></i></a>
+                    <a href="https://www.instagram.com" target="_blank" aria-label="Share on Instagram"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+
+            <div class="rakhi-decoration"></div>
+            <div class="rakhi-decoration"></div>
+            <div class="rakhi-decoration"></div>
+            <div class="rakhi-decoration"></div>
+        </div>
+    </main>
+
+    <script>
+        const senderDisplay = document.getElementById('sender-display');
+        const receiverNameInput = document.getElementById('receiverNameInput');
+        const whatsappShare = document.getElementById('whatsapp-share');
+        const facebookShare = document.getElementById('facebook-share');
+        const backgroundSong = document.getElementById('background-song');
+
+        let currentSender = '';
+
+        function getQueryParam(param) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(param);
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const initialSender = getQueryParam('sender');
+            if (initialSender) {
+                currentSender = decodeURIComponent(initialSender);
+            } else {
+                currentSender = 'A Friend';
+            }
+            updateGreetingAndLinks(currentSender);
+
+            backgroundSong.volume = 0.3;
+            backgroundSong.play().catch(e => console.log("Audio autoplay prevented:", e));
+
+            startConfetti();
+        });
+
+        function updateGreetingAndLinks(sender) {
+            senderDisplay.textContent = `From: ${sender}`;
+            updateShareLinks(sender);
+        }
+
+        function updateSenderAndShare() {
+            const newSenderName = receiverNameInput.value.trim();
+            if (newSenderName) {
+                currentSender = newSenderName;
+                const newUrl = window.location.protocol + "//" + window.location.host + window.location.pathname + "?sender=" + encodeURIComponent(newSenderName);
+                window.history.pushState({ sender: newSenderName }, '', newUrl);
+                updateGreetingAndLinks(newSenderName);
+                receiverNameInput.value = '';
+                triggerConfetti();
+            } else {
+                alert("Please enter your name to send blessings! / ଦୟାକରି ଆପଣଙ୍କ ନାମ ଲେଖନ୍ତୁ!");
+            }
+        }
+
+        function updateShareLinks(sender) {
+            const greetingLink = window.location.protocol + "//" + window.location.host + window.location.pathname + "?sender=" + encodeURIComponent(sender);
+            const shareText = `Happy Raksha Bandhan from ${sender}! Send your blessings too:`;
+            const shareTextOdia = `ଶୁଭ ରକ୍ଷାବନ୍ଧନ ${sender}ଙ୍କ ତରଫରୁ! ଆପଣ ମଧ୍ୟ ଆପଣଙ୍କ ଶୁଭକାମନା ପଠାନ୍ତୁ:`;
+            const combinedShareText = `${shareText}\n\n${shareTextOdia}\n\n${greetingLink}`;
+
+            whatsappShare.href = `https://wa.me/?text=${encodeURIComponent(combinedShareText)}`;
+            facebookShare.href = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(greetingLink)}`;
+        }
+
+        // Confetti Effect
+        const canvas = document.getElementById('confetti-canvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        function createParticle() {
+            return {
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                size: Math.random() * 10 + 5,
+                speedX: Math.random() * 4 - 2,
+                speedY: Math.random() * 4 - 2,
+                color: ['#ff1493', '#ffd700', '#00ff7f', '#ff4500'][Math.floor(Math.random() * 4)],
+            };
+        }
+
+        function startConfetti() {
+            for (let i = 0; i < 50; i++) {
+                particles.push(createParticle());
+            }
+            animateConfetti();
+        }
+
+        function triggerConfetti() {
+            particles = [];
+            for (let i = 0; i < 100; i++) {
+                particles.push(createParticle());
+            }
+            setTimeout(() => {
+                particles = particles.slice(0, 50);
+            }, 3000);
+        }
+
+        function animateConfetti() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach((particle, index) => {
+                ctx.beginPath();
+                ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
+                ctx.fillStyle = particle.color;
+                ctx.fill();
+
+                particle.x += particle.speedX;
+                particle.y += particle.speedY;
+                particle.size *= 0.98;
+
+                if (particle.size < 0.5) {
+                    particles.splice(index, 1);
+                    particles.push(createParticle());
+                }
+            });
+            requestAnimationFrame(animateConfetti);
+        }
+    </script>
+</body>
+</html>
