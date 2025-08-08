@@ -103,19 +103,18 @@
             animation: shimmer 2s infinite alternate, bounceIn 1s ease-out;
         }
 
-        /* Updated Sender Display Styling with Animations */
         #sender-display {
-            font-size: 1.5em;
+            font-size: 1.4em;
             color: #4b0082;
             margin-bottom: 30px;
             font-weight: bold;
             text-shadow: 0 0 5px #ffd700, 0 0 10px #ff4500;
             animation: textGlow 2s infinite alternate, bounceIn 1.5s ease-out;
-            display: inline-block; /* For animation effects */
+            display: inline-block;
             position: relative;
+            line-height: 1.6;
         }
 
-        /* Optional: Add a pseudo-element for extra sparkle */
         #sender-display::after {
             content: '✨';
             position: absolute;
@@ -136,6 +135,53 @@
             transform: scale(0.9);
             animation: slideUp 1s forwards 0.8s ease-out, videoGlow 2s infinite alternate;
             opacity: 0;
+        }
+
+        .input-group {
+            margin-top: 35px;
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 12px;
+            font-size: 1.2em;
+            color: #4b0082;
+            text-shadow: 0 0 5px #ffd700;
+        }
+
+        input[type="text"] {
+            width: calc(100% - 24px);
+            padding: 14px;
+            border: 2px solid #ffd700;
+            border-radius: 10px;
+            font-size: 1.1em;
+            margin-bottom: 20px;
+            box-sizing: border-box;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        input[type="text"]:focus {
+            border-color: #ff1493;
+            box-shadow: 0 0 10px #ff1493;
+            outline: none;
+        }
+
+        button {
+            background: linear-gradient(45deg, #ff1493, #ff4500);
+            color: white;
+            padding: 14px 30px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.2em;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255, 20, 147, 0.5);
+        }
+
+        button:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 8px 20px rgba(255, 20, 147, 0.7);
         }
 
         #share-section .share-icons {
@@ -170,7 +216,6 @@
         .rakhi-decoration:nth-child(3) { bottom: 15%; left: 15%; animation-delay: 2s; }
         .rakhi-decoration:nth-child(4) { bottom: 10%; right: 15%; animation-delay: 3s; }
 
-        /* Animations */
         @keyframes fadeIn {
             from { opacity: 0; }
             to { opacity: 1; }
@@ -240,6 +285,10 @@
             .card-section {
                 padding: 25px;
             }
+            input[type="text"], button {
+                padding: 12px;
+                font-size: 1em;
+            }
             #developer-info {
                 padding: 10px 0;
             }
@@ -285,6 +334,15 @@
 
             <audio id="background-song" src="rakhi-song.mp3" loop autoplay volume="0.3"></audio>
 
+            <div class="input-group">
+                <label for="receiverNameInput">
+                    Enter your name to send your greeting: <br>
+                    ଆପଣଙ୍କ ନାମ ଲେଖନ୍ତୁ ଏବଂ ଶୁଭେଚ୍ଛା ପଠାନ୍ତୁ:
+                </label>
+                <input type="text" id="receiverNameInput" placeholder="Your Name / ଆପଣଙ୍କ ନାମ" autocomplete="off">
+            </div>
+            <button onclick="updateSenderAndShare()">Send Greeting / ଶୁଭେଚ୍ଛା ପଠାନ୍ତୁ</button>
+
             <div id="share-section" style="margin-top: 40px;">
                 <label>
                     Share this greeting with your loved ones! <br>
@@ -306,6 +364,7 @@
 
     <script>
         const senderDisplay = document.getElementById('sender-display');
+        const receiverNameInput = document.getElementById('receiverNameInput');
         const whatsappShare = document.getElementById('whatsapp-share');
         const facebookShare = document.getElementById('facebook-share');
         const backgroundSong = document.getElementById('background-song');
@@ -333,17 +392,33 @@
         });
 
         function updateGreetingAndLinks(sender) {
-            senderDisplay.textContent = `From: ${sender}`;
+            senderDisplay.innerHTML = `
+                ${sender} ki taraf se Rakshabandhan ka hardik hardik Subh kamanaye <br>
+                ${sender} ଙ୍କ ତରଫରୁ ରକ୍ଷାବନ୍ଧନର ହାର୍ଦିକ ଶୁଭେଚ୍ଛା
+            `;
             updateShareLinks(sender);
+        }
+
+        function updateSenderAndShare() {
+            const newSenderName = receiverNameInput.value.trim();
+            if (newSenderName) {
+                currentSender = newSenderName;
+                const greetingLink = window.location.protocol + "//" + window.location.host + window.location.pathname + "?sender=" + encodeURIComponent(newSenderName);
+                const shareText = `${newSenderName} ki taraf se Rakshabandhan ka hardik hardik Subh kamanaye\n\n${newSenderName} ଙ୍କ ତରଫରୁ ରକ୍ଷାବନ୍ଧନର ହାର୍ଦିକ ଶୁଭେଚ୍ଛା\n\n${greetingLink}`;
+                const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(shareText)}`;
+                window.location.href = whatsappUrl; // Redirect to WhatsApp
+                updateGreetingAndLinks(newSenderName); // Update greeting on page
+                receiverNameInput.value = ''; // Clear input
+                triggerConfetti(); // Trigger confetti effect
+            } else {
+                alert("Please enter your name to send blessings! / ଦୟାକରି ଆପଣଙ୍କ ନାମ ଲେଖନ୍ତୁ!");
+            }
         }
 
         function updateShareLinks(sender) {
             const greetingLink = window.location.protocol + "//" + window.location.host + window.location.pathname + "?sender=" + encodeURIComponent(sender);
-            const shareText = `Happy Raksha Bandhan from ${sender}! Send your blessings too:`;
-            const shareTextOdia = `ଶୁଭ ରକ୍ଷାବନ୍ଧନ ${sender}ଙ୍କ ତରଫରୁ! ଆପଣ ମଧ୍ୟ ଆପଣଙ୍କ ଶୁଭକାମନା ପଠାନ୍ତୁ:`;
-            const combinedShareText = `${shareText}\n\n${shareTextOdia}\n\n${greetingLink}`;
-
-            whatsappShare.href = `https://wa.me/?text=${encodeURIComponent(combinedShareText)}`;
+            const shareText = `${sender} ki taraf se Rakshabandhan ka hardik hardik Subh kamanaye\n\n${sender} ଙ୍କ ତରଫରୁ ରକ୍ଷାବନ୍ଧନର ହାର୍ଦିକ ଶୁଭେଚ୍ଛା\n\n${greetingLink}`;
+            whatsappShare.href = `https://wa.me/?text=${encodeURIComponent(shareText)}`;
             facebookShare.href = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(greetingLink)}`;
         }
 
@@ -376,6 +451,16 @@
                 particles.push(createParticle());
             }
             animateConfetti();
+        }
+
+        function triggerConfetti() {
+            particles = [];
+            for (let i = 0; i < 100; i++) {
+                particles.push(createParticle());
+            }
+            setTimeout(() => {
+                particles = particles.slice(0, 50);
+            }, 3000);
         }
 
         function animateConfetti() {
