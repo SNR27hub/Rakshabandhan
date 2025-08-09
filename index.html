@@ -206,7 +206,7 @@
             position: absolute;
             width: 50px;
             height: 50px;
-            background: url('rakhi-image.png') no-repeat center/cover;
+            background: url('https://snr27hub.github.io/Rakshabandhan/rakhi-image.png') no-repeat center/cover;
             animation: float 5s infinite ease-in-out;
             pointer-events: none;
         }
@@ -320,7 +320,7 @@
     <canvas id="confetti-canvas"></canvas>
 
     <div id="developer-info">
-        <img src="developer-photo.jpg" alt="Developer Photo">
+        <img src="https://snr27hub.github.io/Rakshabandhan/developer-photo.jpg" alt="Developer Photo">
         <span class="name">Developer: SNR</span>
     </div>
 
@@ -330,14 +330,14 @@
 
             <p id="sender-display"></p>
 
-            <img id="rakhi-video" src="Rakhi.gif" alt="Raksha Bandhan GIF">
+            <img id="rakhi-video" src="https://snr27hub.github.io/Rakshabandhan/Rakhi.gif" alt="Raksha Bandhan GIF">
 
-            <audio id="background-song" src="rakhi-song.mp3" loop autoplay volume="0.3"></audio>
+            <audio id="background-song" src="https://snr27hub.github.io/Rakshabandhan/rakhi-song.mp3" loop autoplay volume="0.3"></audio>
 
             <div class="input-group">
                 <label for="receiverNameInput">
                     Enter your name to send your greeting: <br>
-                    ଆପଣଙ୍କ ନାମ ଲେଖନ୍ତୁ ଏବଂ ଶୁଭେଚ୍ଛା ପଠାନ୍ତୁ:
+                    ଏହି ଲିଙ୍କ୍ କ୍ଲିକ୍ କରି ତୁମର ନାଁ ଲେଖ ଏବଂ ଶୁଭେଚ୍ଛା ପାଅ!
                 </label>
                 <input type="text" id="receiverNameInput" placeholder="Your Name / ଆପଣଙ୍କ ନାମ" autocomplete="off">
             </div>
@@ -363,6 +363,9 @@
     </main>
 
     <script>
+        // Base URL for links
+        const BASE_URL = "https://snr27hub.github.io/Rakshabandhan";
+
         const senderDisplay = document.getElementById('sender-display');
         const receiverNameInput = document.getElementById('receiverNameInput');
         const whatsappShare = document.getElementById('whatsapp-share');
@@ -371,11 +374,23 @@
 
         let currentSender = '';
 
+        // Utility to get query parameters
         function getQueryParam(param) {
             const urlParams = new URLSearchParams(window.location.search);
             return urlParams.get(param);
         }
 
+        // Utility to escape HTML to prevent XSS
+        function escapeHtml(unsafe) {
+            return unsafe
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
+
+        // Initialize page
         document.addEventListener('DOMContentLoaded', () => {
             const initialSender = getQueryParam('sender');
             if (initialSender) {
@@ -391,33 +406,37 @@
             startConfetti();
         });
 
+        // Update greeting display
         function updateGreetingAndLinks(sender) {
+            const safeSender = escapeHtml(sender);
             senderDisplay.innerHTML = `
-                ${sender} ki taraf se Rakshabandhan ka hardik hardik Subh kamanaye <br>
-                ${sender} ଙ୍କ ତରଫରୁ ରକ୍ଷାବନ୍ଧନର ହାର୍ଦିକ ଶୁଭେଚ୍ଛା
+                ${safeSender} ki taraf se Rakshabandhan ka hardik hardik Subh kamanaye <br>
+                ${safeSender} ଙ୍କ ତରଫରୁ ରକ୍ଷାବନ୍ଧନର ହାର୍ଦିକ ଶୁଭେଚ୍ଛା
             `;
             updateShareLinks(sender);
         }
 
+        // Handle "Send Greeting" button click
         function updateSenderAndShare() {
             const newSenderName = receiverNameInput.value.trim();
             if (newSenderName) {
                 currentSender = newSenderName;
-                const greetingLink = window.location.protocol + "//" + window.location.host + window.location.pathname + "?sender=" + encodeURIComponent(newSenderName);
-                const shareText = `${newSenderName} ki taraf se Rakshabandhan ka hardik hardik Subh kamanaye\n\n${newSenderName} ଙ୍କ ତରଫରୁ ରକ୍ଷାବନ୍ଧନର ହାର୍ଦିକ ଶୁଭେଚ୍ଛା\n\n${greetingLink}`;
+                const greetingLink = `${BASE_URL}/?sender=${encodeURIComponent(newSenderName)}`;
+                const shareText = `ଏହି ଲିଙ୍କ୍ କ୍ଲିକ୍ କରି ତୁମର ନାଁ ଲେଖ ଏବଂ ଶୁଭେଚ୍ଛା ପାଅ!\n${greetingLink}`;
                 const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(shareText)}`;
                 window.location.href = whatsappUrl; // Redirect to WhatsApp
-                updateGreetingAndLinks(newSenderName); // Update greeting on page
+                updateGreetingAndLinks(newSenderName); // Update page greeting
                 receiverNameInput.value = ''; // Clear input
                 triggerConfetti(); // Trigger confetti effect
             } else {
-                alert("Please enter your name to send blessings! / ଦୟାକରି ଆପଣଙ୍କ ନାମ ଲେଖନ୍ତୁ!");
+                alert("Please enter a valid name to send your greeting! / ଦୟାକରି ଏକ ବୈଧ ନାମ ଲେଖନ୍ତୁ!");
             }
         }
 
+        // Update share links
         function updateShareLinks(sender) {
-            const greetingLink = window.location.protocol + "//" + window.location.host + window.location.pathname + "?sender=" + encodeURIComponent(sender);
-            const shareText = `${sender} ki taraf se Rakshabandhan ka hardik hardik Subh kamanaye\n\n${sender} ଙ୍କ ତରଫରୁ ରକ୍ଷାବନ୍ଧନର ହାର୍ଦିକ ଶୁଭେଚ୍ଛା\n\n${greetingLink}`;
+            const greetingLink = `${BASE_URL}/?sender=${encodeURIComponent(sender)}`;
+            const shareText = `ଏହି ଲିଙ୍କ୍ କ୍ଲିକ୍ କରି ତୁମର ନାଁ ଲେଖ ଏବଂ ଶୁଭେଚ୍ଛା ପାଅ!\n${greetingLink}`;
             whatsappShare.href = `https://wa.me/?text=${encodeURIComponent(shareText)}`;
             facebookShare.href = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(greetingLink)}`;
         }
